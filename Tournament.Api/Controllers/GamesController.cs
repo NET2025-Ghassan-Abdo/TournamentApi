@@ -30,9 +30,22 @@ namespace Tournaments.Api.Controllers
 
         // GET: api/Games
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameDto>>> GetGames()
+        //public async Task<ActionResult<IEnumerable<GameDto>>> GetGames()
+        //{
+        //    var games = await _uow.GameRepository.GetAllAsync();
+        //    var dtos = _mapper.Map<IEnumerable<GameDto>>(games);
+        //    return Ok(dtos);
+        //}
+
+        public async Task<ActionResult<IEnumerable<GameDto>>> GetGames([FromQuery] string title = null)
         {
-            var games = await _uow.GameRepository.GetAllAsync();
+            IEnumerable<Core.Entities.Game> games;
+            if (string.IsNullOrWhiteSpace(title))
+                games = await _uow.GameRepository.GetAllAsync();
+            else
+                games = await _uow.GameRepository.GetByTitleAsync(title);
+
+
             var dtos = _mapper.Map<IEnumerable<GameDto>>(games);
             return Ok(dtos);
         }

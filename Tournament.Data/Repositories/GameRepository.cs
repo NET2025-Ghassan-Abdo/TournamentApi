@@ -51,5 +51,13 @@ namespace Tournaments.Data.Repositories
         {
             _context.Remove(game);
         }
+
+        public async Task<IEnumerable<Game>> GetByTitleAsync(string title)
+        {
+            return await _context.Games
+        .AsNoTracking()
+        .Where(g => g.Title == title)
+        .ToListAsync(); 
+        }
     }
 }
